@@ -33,8 +33,8 @@ def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
     for y in Y:
         p1 = y*P0
         u1 = U0 + (C0 * math.sqrt(2)/(math.sqrt(y0 * (y0 - 1)))) * (y - 1) / math.sqrt(1 + alpha0 * y)
-        d3 = U3 - (p1-P3)/ro3*1/(U3-u1)
-        d0 = U0 - (p1 - P0) / ro0 * 1 / (U0 - u1)
+        d3 = U3 - ((p1-P3)/ro3)*1/(U3-u1)
+        d0 = U0 - ((p1 - P0) / ro0) * 1 / (U0 - u1)
         D.append((d0, d3))
         print("Root:",y )
         print("U1:", u1)
@@ -42,8 +42,8 @@ def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
         print("D3:", d3)
 
         u1 = U0 - (C0 * math.sqrt(2)/(math.sqrt(y0 * (y0 - 1)))) * (y - 1) / math.sqrt(1 + alpha0 * y)
-        d3 = U3 - (p1-P3)/ro3*1/(U3-u1)
-        d0 = U0 - (p1 - P0) / ro0 * 1 / (U0 - u1)
+        d3 = U3 - ((p1-P3)/ro3)*1/(U3-u1)
+        d0 = U0 - ((p1 - P0) / ro0) * 1 / (U0 - u1)
         D.append((d0, d3))
         print("U1:", u1)
         print("D0:", d0)
