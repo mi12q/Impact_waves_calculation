@@ -1,7 +1,7 @@
 import math as math
 import project as pr
 
-def eliminate_roots(p1,p0,ro1,ro0,u1,u0,d0):
+def eliminate_roots(p1,p0,ro0,ro1,ro2,u1,u0,d0):
     # проверка корней
     flag = 1
     A = []
@@ -13,6 +13,8 @@ def eliminate_roots(p1,p0,ro1,ro0,u1,u0,d0):
         lambda0 = (u0 - d0) / a
         lambda1 = (u1 - d0) / a
 
+        if ro0 < 0 or ro1 < 0 or ro2 < 0:
+            flag = 0
         if lambda0 < 1:
             flag = 0
         elif lambda1 > 1:
@@ -68,7 +70,7 @@ def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
         # ro11 = (1/(u1 - d0)**2) * (P0 - p1 + ro0*(U0 - d0)**2)
 
         #проверка корней
-        eliminate_roots(p1, P0, ro1, ro0, u1, U0, d0)
+        eliminate_roots(p1, P0, ro0, ro1, ro2, u1, U0, d0)
 
         print("U1:",  "{:.4e}".format(u1))
         print("D0:", "{:.4e}".format(d0))
@@ -89,7 +91,7 @@ def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
 
 
         #проверка корней
-        eliminate_roots(p1, P0, ro1, ro0, u1, U0, d0)
+        eliminate_roots(p1, P0, ro0, ro1,ro2, u1, U0, d0)
 
         print("U1:",  "{:.4e}".format(u1))
         print("D0:", "{:.4e}".format(d0))
