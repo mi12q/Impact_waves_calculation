@@ -13,6 +13,7 @@ def eliminate_roots(p1,p0,ro0,ro1,ro2,u1,u0,d0):
         lambda0 = (u0 - d0) / a
         lambda1 = (u1 - d0) / a
 
+
         if ro0 < 0 or ro1 < 0 or ro2 < 0:
             flag = 0
         if lambda0 < 1:
