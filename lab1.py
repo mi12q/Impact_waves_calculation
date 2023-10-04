@@ -5,33 +5,36 @@ def eliminate_roots(p1,p0,ro0,ro1,ro2,u1,u0,d0):
     # проверка корней
     flag = 1
     A = []
-    A.append(math.sqrt((p1 - p0) / (ro1 - ro0)))
-    A.append((-1) * math.sqrt((p1 - p0) / (ro1 - ro0)))
-
-    flag = 1
-    for a in A:
-        lambda0 = (u0 - d0) / a
-        lambda1 = (u1 - d0) / a
-
-
-        if ro0 < 0 or ro1 < 0 or ro2 < 0:
-            flag = 0
-        if lambda0 < 1:
-            flag = 0
-        elif lambda1 > 1:
-            flag = 0
-        elif (1 - lambda0 * lambda1 > 10 ** (-6)):
-            flag = 0
-        if flag == 1:
-            print("Верный корень")
-            break
-
-    if flag == 0:
+    val = (p1 - p0) / (ro1 - ro0)
+    if val < 0:
         print("Неверный корень")
+    if val > 0:
+        A.append(math.sqrt(val))
+        A.append((-1) * math.sqrt(val))
+
+        flag = 1
+        for a in A:
+            lambda0 = (u0 - d0) / a
+            lambda1 = (u1 - d0) / a
+
+            if ro0 < 0 or ro1 < 0 or ro2 < 0:
+                flag = 0
+            if lambda0 < 1:
+                flag = 0
+            elif lambda1 > 1:
+                flag = 0
+            elif (1 - lambda0 * lambda1 > 10 ** (-6)):
+                flag = 0
+            if flag == 1:
+                print("Верный корень")
+                break
+
+        if flag == 0:
+            print("Неверный корень")
 
 def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
-    C0 = math.sqrt(y0*P0/ro0)
-    C3 = math.sqrt(y3*P3/ro3)
+    C0 = math.sqrt((y0*P0)/ro0)
+    C3 = math.sqrt((y3*P3)/ro3)
     X = P3/P0
     # Y = P1/P0
     alpha0 = (y0 +1)/(y0-1)
@@ -61,14 +64,20 @@ def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
     for y in Y:
         p1 = y*P0
         print("Root:", y)
+        val1 = C3 * math.sqrt(2) / math.sqrt(y3 * (y3 - 1))
+        val2 = (y - X) / math.sqrt(X * (X + alpha3 * y))
+        u1 = U3 - val1 * val2
+        # print(u1)
+        # val1 = C0*math.sqrt(2)/math.sqrt(y0*(y0-1))
+        # val2 = (y-1)/math.sqrt(1+alpha0*y)
+        # u1 = U0 - val1*val2
+        # print(u1)
 
-        u1 = U0 - (C0 * math.sqrt(2)/(math.sqrt(y0 * (y0 - 1)))) * (y - 1) / math.sqrt(1 + alpha0 * y)
-        d3 = U3 - ((P3-p1)/(ro3*(u1-U3)))
-        d0 = U0 - ((P0 - p1) / (ro0*(u1 - U0)))
+        d3 = U3 - (P3 - p1) / (ro3 * (u1 - U3))
+        d0 = U0 - (P0 - p1) / (ro0 * (u1 - U0))
         D.append((d0, d3))
         ro1 = ro0 * (U0 - d0) / (u1 - d0)
         ro2 = ro3*(U3-d3)/(u1-d3)
-        # ro11 = (1/(u1 - d0)**2) * (P0 - p1 + ro0*(U0 - d0)**2)
 
         #проверка корней
         eliminate_roots(p1, P0, ro0, ro1, ro2, u1, U0, d0)
@@ -78,21 +87,26 @@ def calculate_vel(y0,y3,ro0,ro3,U0,U3,P0,P3):
         print("D3:",  "{:.4e}".format(d3))
         print("P1:", "{:.4e}".format(p1))
         print("ro1:", "{:.4e}".format(ro1))
-        # print("ro11:", "{:.4e}".format(ro11))
         print("ro2:",  "{:.4e}".format(ro2))
         print("\n")
 
+        val1 = C3 * math.sqrt(2) / math.sqrt(y3 * (y3 - 1))
+        val2 = (y - X) / math.sqrt(X * (X + alpha3 * y))
+        u1 = U3 + val1 * val2
+        # print(u1)
+        # val1 = C0*math.sqrt(2)/math.sqrt(y0*(y0-1))
+        # val2 = (y-1)/math.sqrt(1+alpha0*y)
+        # u1 = U0 + val1*val2
+        # print(u1)
 
-        u1 = U0 + (C0 * math.sqrt(2)/(math.sqrt(y0 * (y0 - 1)))) * (y - 1) / math.sqrt(1 + alpha0 * y)
-        d3 = U3 - ((P3-p1)/(ro3*(u1-U3)))
-        d0 = U0 - ((P0 - p1) / (ro0*(u1 - U0)))
+        d3 = U3 - (P3-p1)/(ro3*(u1-U3))
+        d0 = U0 - (P0 - p1) / (ro0*(u1 - U0))
         D.append((d0, d3))
         ro1 = ro0 * (U0 - d0) / (u1 - d0)
         ro2 = ro3*(U3-d3)/(u1-d3)
 
-
         #проверка корней
-        eliminate_roots(p1, P0, ro0, ro1,ro2, u1, U0, d0)
+        eliminate_roots(p1, P0, ro0, ro1, ro2, u1, U0, d0)
 
         print("U1:",  "{:.4e}".format(u1))
         print("D0:", "{:.4e}".format(d0))
